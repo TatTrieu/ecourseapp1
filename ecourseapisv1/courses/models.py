@@ -4,7 +4,7 @@ from cloudinary.models import CloudinaryField
 from ckeditor.fields import RichTextField
 
 class User(AbstractUser):
-    pass
+    avatar = CloudinaryField(null=True)
 
 class BaseModel(models.Model):
     active = models.BooleanField(default=True)
@@ -36,7 +36,32 @@ class Lesson(BaseModel):
     content = RichTextField()
     image = CloudinaryField()
     course = models.ForeignKey(Course, on_delete=models.PROTECT)
+    tags = models.ManyToManyField('Tag')
 
     class Meta:
         unique_together = ('subject', 'course')
 
+    def __str__(self):
+        return self.subject
+
+class Tag(BaseModel):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Interaction(BaseModel):
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
+
+
+class Comment(Interaction):
+    content = models.CharField(max_length=255)
+
+class Like(Interaction):
+    class Meta:
+        unique_together = ('lesson', 'user')
