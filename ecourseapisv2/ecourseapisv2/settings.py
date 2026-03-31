@@ -19,7 +19,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_ROOT = '%s/courses/static/' % BASE_DIR
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -30,7 +29,6 @@ SECRET_KEY = 'django-insecure-#94i$&s-kcg$&d$vq3)3ilfz5dnmcg2w=&bviicnn79j$068p#
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -45,7 +43,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'rest_framework',
-    'drf_yasg'
+    'drf_yasg',
+    'oauth2_provider'
 ]
 
 AUTH_USER_MODEL = 'courses.User'
@@ -53,11 +52,19 @@ AUTH_USER_MODEL = 'courses.User'
 CKEDITOR_UPLOAD_PATH = "images/ckeditors/"
 
 import cloudinary.api
+
 cloudinary.config(
-  	cloud_name = "dxxwcby8l",
-  	api_key = "792844686918347",
-  	api_secret = "T8ys_Z9zaKSqmKWa4K1RY6DXUJg"
+    cloud_name="dxxwcby8l",
+    api_key="792844686918347",
+    api_secret="T8ys_Z9zaKSqmKWa4K1RY6DXUJg"
 )
+
+REST_FRAMEWORK = {
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    )
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -89,7 +96,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ecourseapisv2.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -99,11 +105,12 @@ DATABASES = {
         'NAME': 'coursedbv4',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': '' # mặc định localhost
+        'HOST': ''  # mặc định localhost
     }
 }
 
 import pymysql
+
 pymysql.install_as_MySQLdb()
 
 # Password validation
@@ -124,7 +131,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -136,7 +142,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -146,3 +151,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CLIENT_ID = 'BSwkTfUtIjWJokOnkSiOIFqqCixrrMoxBb4TYSLh'
+CLIENT_SECRECT = 'yVyIpb2yCMxoHVxHMMIpy01AvV98fZBFsnmoUXqOIcHFcHeQcHV8USEXijrcddZML1Hpc8JzMNrm14hUZwPsEpCJMrBr6QfrU8cgnNwmQlSN4h6OrdjctjEIYODmaHmB'
